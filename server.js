@@ -51,7 +51,8 @@ else {
   //Creacion de sesiones en mongoStore
   app.use(session({
     store: MongoStore.create({
-      mongoUrl: config.MONGO_URL,
+      // mongoUrl: config.MONGO_URL,
+      mongoUrl:'mongodb+srv://ivanzarate:Estela12@cluster0.jrymifn.mongodb.net/ecommerce?retryWrites=true&w=majority',
       ttl: 600
     }),
     secret: config.CLAVE_SECRETA,
