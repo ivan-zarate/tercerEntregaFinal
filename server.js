@@ -55,7 +55,8 @@ else {
       mongoUrl:'mongodb+srv://ivanzarate:Estela12@cluster0.jrymifn.mongodb.net/ecommerce?retryWrites=true&w=majority',
       ttl: 600
     }),
-    secret: config.CLAVE_SECRETA,
+    secret:"clavesecretaaaaaaa",
+    //secret: config.CLAVE_SECRETA,
     resave: false,
     saveUninitialized: false,
     cookie: {
