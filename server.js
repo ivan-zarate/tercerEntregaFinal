@@ -105,8 +105,8 @@ else {
 
   srv.on('error', error => logger.warn(`Error en el servidor ${error}`))
 
-  app.get("*", async (req, res) => {
-    logger.warn("No existe la pagina solicitada")
-    return res.status(400).send({error: `An error occurred `});
-  });
+  // app.get("*", async (req, res) => {
+  //   logger.warn("No existe la pagina solicitada")
+  //   return res.status(400).send({error: `An error occurred `});
+  // });
 } 
