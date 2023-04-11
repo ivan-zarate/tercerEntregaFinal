@@ -1,4 +1,4 @@
-const logger = require("../../logger");
+const logger = require("../../logger.js");
 
 const validateBody = (req, res, next) => {
     if (req.body.name && req.body.description && req.body.code && req.body.url && req.body.price && req.body.stock || req.body.text) {

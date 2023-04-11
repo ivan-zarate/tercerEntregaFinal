@@ -1,6 +1,6 @@
 let baseUrl = "http://localhost:8080";
 let productos = [];
-let user = [];
+let user = {};
 
 const getProducts = () => {
     fetch(baseUrl + '/api/products').then(res => {
@@ -168,13 +168,21 @@ const addUser = async () => {
         headers: {
             "Content-Type": 'application/json; charset=UTF-8'
         },
-        //withCredentials: false,
         credentials:"include",
         body: JSON.stringify(data),
     })
         .then(res => {
             if (res) {
-                    //location.href = "../public/index.html"
+                res.json().then(json => {
+                    console.log(json);
+                    if(json.message){
+                        let error=document.getElementById("error");
+                        error.innerHTML=`${json.message}`;
+                    }
+                    else{
+                        location.href = "../public/index.html"
+                    }
+                })  
             }
         })
 }
@@ -194,7 +202,16 @@ const loginUser = async () => {
     })
         .then(res => {
             if (res) {
-                    //location.href = "../public/index.html"
+                res.json().then(json => {
+                    console.log(json[0]);
+                    if(json[0].error){
+                        let error=document.getElementById("error");
+                        error.innerHTML=`${json[0].error}`;
+                    }
+                    else{
+                        location.href = "../public/index.html"
+                    }
+                })  
             }
         })
 }
@@ -203,6 +220,7 @@ const getUser = () => {
     fetch(baseUrl + '/api/user').then(res => {
         res.json().then(json => {
             user = json;
+            console.log("front",json);
             printUser();
         })
     })
@@ -210,7 +228,6 @@ const getUser = () => {
 const printUser = () => {
     if (user.error){
         container = document.getElementById('user').style.display="none";
-        
     }
     else{
         let container = document.getElementById('user');

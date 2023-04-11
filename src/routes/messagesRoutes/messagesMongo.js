@@ -1,10 +1,11 @@
 const express = require("express");
 const chatInMongo = express.Router();
-const messagesMongoDAO=require("../../daos/messages/daoMessagesMongo")
-const validateBody = require("../../middlewares/validateBody");
+const messagesMongoDAO=require("../../daos/messages/daoMessagesMongo.js")
+const validateBody = require("../../middlewares/validateBody.js");
+const logger=require("../../../logger.js");
 
 chatInMongo.use((req, res, next) => {
-  console.log("Time: ", Date.now());
+  logger.info("Time: ", Date.now());
   next();
 });
 

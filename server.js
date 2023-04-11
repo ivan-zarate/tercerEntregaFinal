@@ -3,32 +3,35 @@ const cors = require('cors');
 const app = require("express")();
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
-const config = require("./config/config");
-const newArgs = require("./minimist/arg");
-const connection = require('./src/connections/connectionmongodb');
+const config = require("./config/config.js");
+const newArgs = require("./config/arg.js");
+const connection = require('./src/connections/connectionmongodb.js');
+const cookieParser=require("cookie-parser")
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const passport = require("passport");
 const cluster = require("cluster");
 const os = require("os");
 const numCors = os.cpus().length;
-const logger=require("./logger");
+const logger=require("./logger.js");
 
 const port = newArgs.port;
 
 //Acceso a rutas
-const productsInMongo = require("./src/routes/productsRoutes/productsMongo");
-const cartsInMongo = require("./src/routes/cartsRoutes/cartsMongo");
-const chatInMongo = require("./src/routes/messagesRoutes/messagesMongo")
-const sessionsMongo = require("./src/routes/sessionRoutes/authsSession");
-const processRoutes = require("./src/routes/processRoutes/processRoutes");
+const productsInMongo = require("./src/routes/productsRoutes/productsMongo.js");
+const cartsInMongo = require("./src/routes/cartsRoutes/cartsMongo.js");
+const chatInMongo = require("./src/routes/messagesRoutes/messagesMongo.js")
+const sessionsMongo = require("./src/routes/sessionRoutes/authsSession.js");
+const processRoutes = require("./src/routes/processRoutes/processRoutes.js");
+const mailRoute= require("./src/routes/mailRoutes/mailRoutes.js");
+const twilioWapp= require("./src/routes/twilioRoutes/twilioRoute.js");
 
 if (newArgs.mode === "CLUSTER" && cluster.isPrimary) {
   for(let i =0; i<numCors; i++){
     cluster.fork();
   }
   cluster.on("exit", (worker)=>{
-    console.log(`proceso ${worker.process.pid} ha dejado de funcionar`);
+    logger.warn(`proceso ${worker.process.pid} ha dejado de funcionar`);
     cluster.fork();
   })
 }
@@ -47,16 +50,14 @@ else {
       credentials: true,
     })
   );
-
+  app.use(cookieParser());
   //Creacion de sesiones en mongoStore
   app.use(session({
     store: MongoStore.create({
-      // mongoUrl: config.MONGO_URL,
-      mongoUrl:'mongodb+srv://ivanzarate:Estela12@cluster0.jrymifn.mongodb.net/ecommerce?retryWrites=true&w=majority',
+      mongoUrl: config.MONGO_URL,
       ttl: 600
     }),
-    secret:"clavesecretaaaaaaa",
-    //secret: config.CLAVE_SECRETA,
+    secret: config.CLAVE_SECRETA,
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -73,8 +74,10 @@ else {
   app.use('/api', productsInMongo);
   app.use('/api', cartsInMongo);
   app.use('/api', chatInMongo);
-  app.use('/api', sessionsMongo)
-  app.use('/api', processRoutes)
+  app.use('/api', sessionsMongo);
+  app.use('/api', processRoutes);
+  app.use('/api', mailRoute);
+  app.use('/api', twilioWapp);
 
   app.use(express.static("public"));
 
@@ -82,8 +85,7 @@ else {
   const mensajes = [];
 
   io.on('connection', socket => {
-    logger.info('Nuevo cliente conectado!')
-    console.log('Nuevo cliente conectado!');
+    logger.info('Nuevo cliente conectado!');
     socket.emit('mensajes', mensajes);
     socket.on('mensaje', data => {
       mensajes.push({ socketid: socket.id, mensaje: data })
@@ -93,14 +95,13 @@ else {
 
 
 
-  connection().then(() => {console.log('Connected to Mongo'); logger.info('Connected to Mongo')}).catch(() => {console.log('An error occurred trying to connect to mongo'),logger.warn('An error occurred trying to connect to mongo')});
+  connection().then(() => logger.info('Connected to Mongo')).catch(() =>logger.warn('An error occurred trying to connect to mongo'));
 
   const srv = server.listen(port, () => {
-    logger.info("Conexion exitosa al servidor")
-    console.log(`Escuchando app en el puerto ${srv.address().port} sobre el proceso ${process.pid} en modo ${newArgs.mode}`);
+    logger.info(`Escuchando app en el puerto ${srv.address().port} sobre el proceso ${process.pid} en modo ${newArgs.mode}`);
   });
 
-  srv.on('error', error => {console.log(`Error en servidor ${error}`), logger.warn('Error en el servidor')})
+  srv.on('error', error => logger.warn(`Error en el servidor ${error}`))
 
   app.get("*", async (req, res) => {
     logger.warn("No existe la pagina solicitada")

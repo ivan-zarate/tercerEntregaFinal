@@ -1,11 +1,12 @@
 const express = require("express");
 const cartsInMongo = express.Router();
-const cartsMongoDAO = require("../../daos/carts/daoCartMongo")
-const productsMongoDAO = require("../../daos/products/daoProductMongo")
-const validateBody = require("../../middlewares/validateBody");
+const cartsMongoDAO = require("../../daos/carts/daoCartMongo.js")
+const productsMongoDAO = require("../../daos/products/daoProductMongo.js")
+const validateBody = require("../../middlewares/validateBody.js");
+const logger=require("../../../logger.js");
 
 cartsInMongo.use((req, res, next) => {
-    console.log("Time: ", Date.now());
+    logger.info("Time: ", Date.now());
     next();
 });
 

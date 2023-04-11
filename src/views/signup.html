@@ -28,11 +28,22 @@
         <h2>Registro de Usuarios</h2>
         <form>
             <div class="col-md-6">
+                <p id="error"></p>
                 <div class="form-group">
                     <label>Email</label>
                     <input type="text" name="email" id="email" class="form-control" placeholder="Ingrese email">
                     <label>Contraseña</label>
                     <input type="password" name="password" id="password" class="form-control" placeholder="Ingrese contraseña">
+                    <label>Nombre</label>
+                    <input type="text" name="nombre" id="nombre" class="form-control" placeholder="Ingrese nombre">
+                    <label>Direccion</label>
+                    <input type="text" name="direccion" id="direccion" class="form-control" placeholder="Ingrese direccion">
+                    <label>Edad</label>
+                    <input type="number" name="edad" id="edad" class="form-control" placeholder="Ingrese su edad">
+                    <label>Telefono</label>
+                    <input type="number" name="telefono" id="telefono" class="form-control" placeholder="Ingrese su numero de Telefono">
+                    <label>Foto/Avatar</label>
+                    <input type="url" name="avatar" id="avatar" class="form-control" placeholder="Ingrese foto o Avatar">
                     <a onclick="addUser()" class="btn btn-success my-2">Enviar</a>
                 </div>
             </div>

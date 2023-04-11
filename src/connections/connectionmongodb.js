@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const connection = async () => {
-  try {
+    try {
     mongoose.set("strictQuery", true);
     mongoose.set('debug', true);
     return mongoose.connect(

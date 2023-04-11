@@ -137,3 +137,9 @@ body {
   }
 
 }
+#error{
+  background-color: coral;
+  color: white;
+  font-weight: bolder;
+  text-align: center;
+}
