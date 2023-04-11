@@ -162,6 +162,11 @@ const addUser = async () => {
     let data = {
         email: document.getElementById("email").value,
         password: document.getElementById("password").value,
+        name: document.getElementById("name").value,
+        addres: document.getElementById("addres").value,
+        age: document.getElementById("age").value,
+        telphone: document.getElementById("telphone").value,
+        avatar: document.getElementById("avatar").value,
     }
     await fetch(baseUrl + '/api/signup', {
         method: "POST",
@@ -174,12 +179,11 @@ const addUser = async () => {
         .then(res => {
             if (res) {
                 res.json().then(json => {
-                    console.log(json);
                     if(json.message){
                         let error=document.getElementById("error");
                         error.innerHTML=`${json.message}`;
                     }
-                    else{
+                    if(json.user){
                         location.href = "../public/index.html"
                     }
                 })  
@@ -197,7 +201,7 @@ const loginUser = async () => {
         headers: {
             "Content-Type": 'application/json; charset=UTF-8'
         },
-        //credentials:"include",
+        credentials:"include",
         body: JSON.stringify(data),
     })
         .then(res => {

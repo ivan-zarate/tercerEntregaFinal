@@ -5,6 +5,7 @@ const usersMongoDAO = require("../../daos/users/daoUsersMongo.js"); // Par crear
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcryptjs");
 const logger = require("../../../logger.js");
+const { transporter, adminEmail } = require("../../nodemailer/gmail.js");
 
 let user = [];
 let messages = [];
@@ -28,10 +29,16 @@ passport.use("signUpStrategy", new LocalStrategy(
     (req, username, password, done) => {
         usersMongoDAO.findOne({ username: username }, (err, userDB) => {
             if (err) return done(err, false, { message: `Hubo un error al buscar el usuario ${err} ` });
-            if (userDB) return done(null, false, { message: `El usuario ya existe` })
+            if (userDB) return done(null, false, { message: `El usuario ya existe` });
+            console.log("boddy", req.body);
             const newUser = {
                 username: username,
-                password: bcrypt.hashSync(password, 8)
+                password: bcrypt.hashSync(password, 8),
+                name: req.body.name,
+                addres: req.body.addres,
+                age: req.body.age,
+                telphone: req.body.telphone,
+                avatar: req.body.avatar,
             };
             usersMongoDAO.create(newUser, (err, userCreated) => {
                 if (err) return done(err, false, { message: `Hubo un error al crear el usuario ${err}` });
@@ -67,7 +74,7 @@ sessionsMongo.use((req, res, next) => {
 //     res.status(200).cookie("user.email", JSON.stringify(req.body.email), { sameSite: "none", secure: true }).send("Registro exitoso")
 // });
 
-sessionsMongo.post("/signup", (req, res) => {
+sessionsMongo.post("/signup", async (req, res) => {
 
     passport.authenticate("signUpStrategy", (error, user, info) => {
 
@@ -80,7 +87,23 @@ sessionsMongo.post("/signup", (req, res) => {
         res.json({ user, message: info.message });
 
     })(req, res);//pasamos a authenticate los argumentos req,res, y next para que se puedan utilizar dentro de este método.
-
+    user.push(req.body);
+    const emailTemplate = `<div>
+        <h1>Nuevo Registro</h1>
+        <p>Email: ${req.body.email}</p>
+        <p>Name: ${req.body.name}</p>
+        <p>Addres: ${req.body.addres}</p>
+        <p>Age: ${req.body.age}</p>
+        <p>Telphone: ${req.body.telphone}</p>
+        <img src="${req.body.avatar}" style="width:75px"/>
+        </div>`;
+    const mailOptions = {
+        from: adminEmail,//quien envia el correo
+        to: adminEmail,//receptor del correo
+        subject: "Nuevo Registro",//asunto del correo
+        html: emailTemplate
+    };
+    await transporter.sendMail(mailOptions);
 });
 
 sessionsMongo.post("/login", (req, res) => {

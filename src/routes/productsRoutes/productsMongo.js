@@ -14,8 +14,15 @@ productsInMongo.use((req, res, next) => {
 productsInMongo.get("/products", async (req, res) => {
   try {
     const readProducts= await productsMongoDAO.find();
-    logger.info("Productos encontrados con exito")
-    return res.status(200).send(readProducts);
+    if(readProducts){
+      logger.info("Productos encontrados con exito")
+      return res.status(200).send(readProducts);
+    }
+    else{
+      logger.info("No hay productos")
+      return res.status(200).send("No hay productos");
+    }
+    
   } catch (error) {
     logger.error(error.message)
     return res.status(400).send({
