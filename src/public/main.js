@@ -25,8 +25,8 @@ const mapProducts = (product) => {
             <h5>${product.name}</h5>
             <p>$${product.price}</p>
             <img src="${product.url}" alt="${product.name}">
-            <button type="button" class="btn btn-danger btn-sm" onclick="deleteProduct(${product.code})">Eliminar</button>
-            <button type="button" class="btn btn-warning btn-sm" onclick="populateData(${product.code})">Actualizar</button>
+            <button type="button" class="btn btn-danger btn-sm" onclick="deleteProduct('${product._id}')">Eliminar</button>
+            <button type="button" class="btn btn-warning btn-sm" onclick="populateData('${product._id}')">Actualizar</button>
             </div>
             `
 
@@ -90,8 +90,11 @@ const actualizeProduct = () => {
         getProducts();
     })
 }
+
+//Funciones para vistas del carrito
+
 const productsInCart = () => {
-    fetch(baseUrl + '/api/cart/products').then(res => {
+    fetch(baseUrl + '/api/cart-products').then(res => {
         res.json().then(json => {
             productos = json;
             printCartProducts()
@@ -113,7 +116,13 @@ const mapCartProducts = (product) => {
     <div>
     <h6>${product.name}</h6>
     <p>$${product.price}</p>
-    <img style="height:4em" src="${product.url}" alt="${product.name}">
+    <section class="amount">
+        <img style="height:2.5em" src="../public/images/nuevoMenos.png" alt="signo menos">
+        <p>${product.amount}</p>
+        <img style="height:2.5em" src="../public/images/nuevoMas.png" alt="signo mas">
+    </section>
+    <img class="productInCart" src="${product.url}" alt="${product.name}">
+    <img style="height:4em" src="../public/images/basura.png" alt="tacho de basura">
 </div>`
 
 }
@@ -140,13 +149,13 @@ const mapProductsCart = (product) => {
             <h5>${product.name}</h5>
             <p>$${product.price}</p>
             <img src="${product.url}" alt="${product.name}">
-            <button type="button" class="btn btn-danger btn-sm" onclick="addProductCart(${product.code})">Agregar</button>
+            <button type="button" class="btn btn-danger btn-sm" onclick="addProductCart('${product._id}')">Agregar</button>
             </div>
             `
 }
 
-const addProductCart = (productCode) => {
-    fetch(baseUrl + '/api/cart/products/' + productCode, {
+const addProductCart = (productId) => {
+    fetch(baseUrl + '/api/cart-products/' + productId, {
         method: "POST",
         headers: {
             "Content-Type": 'application/json; charset=UTF-8'
@@ -173,20 +182,20 @@ const addUser = async () => {
         headers: {
             "Content-Type": 'application/json; charset=UTF-8'
         },
-        credentials:"include",
+        credentials: "include",
         body: JSON.stringify(data),
     })
         .then(res => {
             if (res) {
                 res.json().then(json => {
-                    if(json.message){
-                        let error=document.getElementById("error");
-                        error.innerHTML=`${json.message}`;
+                    if (json.message) {
+                        let error = document.getElementById("error");
+                        error.innerHTML = `${json.message}`;
                     }
-                    if(json.user){
+                    if (json.user) {
                         location.href = "../public/index.html"
                     }
-                })  
+                })
             }
         })
 }
@@ -201,21 +210,21 @@ const loginUser = async () => {
         headers: {
             "Content-Type": 'application/json; charset=UTF-8'
         },
-        credentials:"include",
+        credentials: "include",
         body: JSON.stringify(data),
     })
         .then(res => {
             if (res) {
                 res.json().then(json => {
                     console.log(json[0]);
-                    if(json[0].error){
-                        let error=document.getElementById("error");
-                        error.innerHTML=`${json[0].error}`;
+                    if (json[0].error) {
+                        let error = document.getElementById("error");
+                        error.innerHTML = `${json[0].error}`;
                     }
-                    else{
+                    else {
                         location.href = "../public/index.html"
                     }
-                })  
+                })
             }
         })
 }
@@ -224,19 +233,19 @@ const getUser = () => {
     fetch(baseUrl + '/api/user').then(res => {
         res.json().then(json => {
             user = json;
-            console.log("front",json);
+            console.log("front", json);
             printUser();
         })
     })
 }
 const printUser = () => {
-    if (user.error){
-        container = document.getElementById('user').style.display="none";
+    if (user.error) {
+        container = document.getElementById('user').style.display = "none";
     }
-    else{
+    else {
         let container = document.getElementById('user');
-        container.innerHTML = 
-        `<div>
+        container.innerHTML =
+            `<div>
         <p>¡Hola ${user.email}!</p>
         <button type="button" class="btn btn-danger btn-sm" onclick="destroySession()">LogOut</button>
         </div>`
@@ -245,7 +254,7 @@ const printUser = () => {
 
 const destroySession = () => {
     fetch(baseUrl + '/api/logout', { method: "DELETE" }).then(res => {
-        user=[];
+        user = [];
         getProducts();
     })
 }

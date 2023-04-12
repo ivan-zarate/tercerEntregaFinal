@@ -66,8 +66,20 @@ body {
 }
 
 #cartProducts img {
-  width: 3em;
   margin-right: 1.5em;
+}
+.productInCart{
+  height: 5em;
+  width: 5em;
+}
+.amount{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.amount p{
+  margin-top: 1em;
+  font-size: 18px;
 }
 
 #cartProducts h6 {
@@ -76,7 +88,7 @@ body {
 
 #cartProducts p {
   font-weight: bolder;
-  padding-right: 2em;
+  padding-right: 1.5em;
 }
 
 .titulos {
