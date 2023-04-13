@@ -2,7 +2,7 @@ const twilio=require("twilio");
 
 //credenciales
 const accountId="ACffc303506b8d78abe13e084daa7bd1d4";
-const accountToken="b7beeb845ff3525a6221d75660d75bc1";
+const accountToken="93e96b537b5916e70ef9a43681b15f7e";
 
 const twilioClient=twilio(accountId, accountToken);
 

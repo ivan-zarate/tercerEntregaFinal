@@ -54,25 +54,6 @@ sessionsMongo.use((req, res, next) => {
     next();
 });
 
-// sessionsMongo.post("/signup", passport.authenticate("signUpStrategy", (error, user1, info, req, res) => {
-//     messages = [];
-//     console.log("aca?", error, user1, info);
-
-//     if (info) {
-//         console.log(info);
-//         return ({ message: info.message });
-//          messages = info.message
-//     }
-
-//     if (!user1) {
-//         messages = info.message
-//     }
-
-//     user = user1
-// }), (req, res) => {
-//     console.log("Probando mensajes", messages);
-//     res.status(200).cookie("user.email", JSON.stringify(req.body.email), { sameSite: "none", secure: true }).send("Registro exitoso")
-// });
 
 sessionsMongo.post("/signup", async (req, res) => {
 
@@ -88,6 +69,7 @@ sessionsMongo.post("/signup", async (req, res) => {
 
     })(req, res);//pasamos a authenticate los argumentos req,res, y next para que se puedan utilizar dentro de este método.
     user.push(req.body);
+
     const emailTemplate = `<div>
         <h1>Nuevo Registro</h1>
         <p>Email: ${req.body.email}</p>
@@ -97,10 +79,11 @@ sessionsMongo.post("/signup", async (req, res) => {
         <p>Telphone: ${req.body.telphone}</p>
         <img src="${req.body.avatar}" style="width:75px"/>
         </div>`;
+
     const mailOptions = {
-        from: adminEmail,//quien envia el correo
-        to: adminEmail,//receptor del correo
-        subject: "Nuevo Registro",//asunto del correo
+        from: adminEmail,
+        to: adminEmail,
+        subject: "Nuevo Registro",
         html: emailTemplate
     };
     await transporter.sendMail(mailOptions);
@@ -115,7 +98,7 @@ sessionsMongo.post("/login", (req, res) => {
             if (!userDB) res.send({ message: `El usuario no existe` });
             const compare = bcrypt.compareSync(password, userDB.password);
             if (compare) {
-                user.push(req.body);
+                user.push(userDB);
                 res.send(user);
             }
             else {
@@ -123,7 +106,6 @@ sessionsMongo.post("/login", (req, res) => {
                 res.send(user)
             }
         })
-
     } catch (error) {
         return res.status(400).send({
             error: `An error occurred ${error.message}`,

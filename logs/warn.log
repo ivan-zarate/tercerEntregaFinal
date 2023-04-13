@@ -22,12 +22,47 @@
 {"level":"warn","message":"No existe la pagina solicitada"}
 {"level":"warn","message":"No existe la pagina solicitada"}
 {"level":"warn","message":"No existe la pagina solicitada"}
-{"level":"warn","message":"No existe la pagina solicitada"}
-{"level":"warn","message":"No existe la pagina solicitada"}
-{"level":"warn","message":"No existe la pagina solicitada"}
-{"level":"warn","message":"No existe la pagina solicitada"}
-{"level":"warn","message":"No existe la pagina solicitada"}
-{"level":"warn","message":"No existe la pagina solicitada"}
-{"level":"warn","message":"No existe la pagina solicitada"}
-{"level":"warn","message":"No existe la pagina solicitada"}
-{"level":"warn","message":"No existe la pagina solicitada"}
+
+{"level":"error","message":"Por favor ingresar los datos de usuario"}
+{"level":"error","message":"Por favor ingresar los datos de usuario"}
+{"level":"warn","message":"proceso 50848 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 160384 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 162828 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 161008 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 163696 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 163984 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 152412 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 157532 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 130768 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 163720 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 164068 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 149124 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 159192 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 163952 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 162844 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 164860 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 162760 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 162472 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 163872 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 156836 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 160664 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 164844 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 159248 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 153184 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 161372 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 164416 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 164248 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 163960 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 156324 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 164720 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 164436 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 120568 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 159160 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 164444 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 163860 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 44364 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 163952 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 164024 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 154868 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 160932 ha dejado de funcionar"}
+{"level":"warn","message":"proceso 164384 ha dejado de funcionar"}

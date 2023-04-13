@@ -23,8 +23,7 @@ const cartsInMongo = require("./src/routes/cartsRoutes/cartsMongo.js");
 const chatInMongo = require("./src/routes/messagesRoutes/messagesMongo.js")
 const sessionsMongo = require("./src/routes/sessionRoutes/authsSession.js");
 const processRoutes = require("./src/routes/processRoutes/processRoutes.js");
-const mailRoute= require("./src/routes/mailRoutes/mailRoutes.js");
-const twilioWapp= require("./src/routes/twilioRoutes/twilioRoute.js");
+const sellsRoutes =require("./src/routes/sellsRoutes/sellRoutes.js");
 
 if (newArgs.mode === "CLUSTER" && cluster.isPrimary) {
   for(let i =0; i<numCors; i++){
@@ -77,9 +76,8 @@ else {
   app.use('/api', cartsInMongo);
   app.use('/api', chatInMongo);
   app.use('/api', sessionsMongo);
+  app.use('/api', sellsRoutes);
   app.use('/api', processRoutes);
-  app.use('/api', mailRoute);
-  app.use('/api', twilioWapp);
 
   app.use(express.static("public"));
 

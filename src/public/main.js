@@ -97,7 +97,9 @@ const productsInCart = () => {
     fetch(baseUrl + '/api/cart-products').then(res => {
         res.json().then(json => {
             productos = json;
-            printCartProducts()
+            printCartProducts();
+            getUser();
+            totalAPagar();
         })
     })
 }
@@ -108,23 +110,74 @@ const printCartProducts = () => {
     productos.forEach(producto => {
         container.innerHTML += mapCartProducts(producto);
     })
+    
     productsTo();
 }
 
 const mapCartProducts = (product) => {
     return `
     <div>
-    <h6>${product.name}</h6>
-    <p>$${product.price}</p>
-    <section class="amount">
-        <img style="height:2.5em" src="../public/images/nuevoMenos.png" alt="signo menos">
-        <p>${product.amount}</p>
-        <img style="height:2.5em" src="../public/images/nuevoMas.png" alt="signo mas">
-    </section>
-    <img class="productInCart" src="${product.url}" alt="${product.name}">
-    <img style="height:4em" src="../public/images/basura.png" alt="tacho de basura">
-</div>`
+        <h6>${product.name}</h6>
+        <p>$${product.price}</p>
+        <section class="amount">
+            <a onclick="editAmount('${product._id}','del')"><img style="height:2.5em" src="../public/images/nuevoMenos.png" alt="signo menos"></a>
+            <p>${product.amount}</p>
+            <a onclick="editAmount('${product._id}','add')"><img style="height:2.5em" src="../public/images/nuevoMas.png" alt="signo mas"></a>
+        </section>
+        <img class="productInCart" src="${product.url}" alt="${product.name}">
+        <a onclick="deleteItem('${product._id}')"><img style="height:4em" src="../public/images/basura.png" alt="tacho de basura"></a>
+    </div>`
 
+
+}
+
+const editAmount = (productId, query) => {
+    fetch(baseUrl + '/api/cart-products/' + productId + '?query=' + query, {
+        method: "PUT",
+        headers: {
+            "Content-Type": 'application/json; charset=UTF-8'
+        }
+    }).then(res => {
+        productsInCart();
+        totalAPagar();
+    })
+}
+const deleteItem = (productId) => {
+    fetch(baseUrl + '/api/cart-products/' + productId, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": 'application/json; charset=UTF-8'
+        }
+    }).then(res => {
+        productsInCart();
+    })
+}
+
+const totalAPagar=()=>{
+    let container = document.getElementById('totalAPagar');
+    const total=productos.reduce((acc,product)=>acc + (product.price*product.amount),0)
+    container.innerHTML = `
+    <p>Total a pagar $${total}</p>
+    <button type="button" onclick="finalizarCompra()">Finalizar compra</button>
+    `
+}
+finalizarCompra=()=>{
+    if(user.error){
+        const finalizar = document.querySelector('.finalizarCompra')
+        finalizar.innerHTML=`Para continuar con la compra primero debe <a href="../views/signup.html">registrarse</a> o <a href="../views/login.html">iniciar sesion</a>`
+    }
+    else{
+        fetch(baseUrl + '/api/sells/', {
+            method: "POST",
+            headers: {
+                "Content-Type": 'application/json; charset=UTF-8'
+            },
+            body:JSON.stringify(user),
+        }).then(res => {
+            location.href = "../views/compraFinalizada.html";
+        })
+    }
+    
 }
 
 const productsTo = () => {
@@ -161,13 +214,14 @@ const addProductCart = (productId) => {
             "Content-Type": 'application/json; charset=UTF-8'
         }
     }).then(res => {
-        printCartProducts();
+        productsInCart();
     })
 }
 
 // registro de usuarios
 
 const addUser = async () => {
+    user={}
     let data = {
         email: document.getElementById("email").value,
         password: document.getElementById("password").value,
@@ -201,6 +255,7 @@ const addUser = async () => {
 }
 
 const loginUser = async () => {
+    user={}
     let data = {
         email: document.getElementById("email").value,
         password: document.getElementById("password").value,
@@ -230,6 +285,7 @@ const loginUser = async () => {
 }
 
 const getUser = () => {
+    user={};
     fetch(baseUrl + '/api/user').then(res => {
         res.json().then(json => {
             user = json;
@@ -246,7 +302,7 @@ const printUser = () => {
         let container = document.getElementById('user');
         container.innerHTML =
             `<div>
-        <p>¡Hola ${user.email}!</p>
+        <p>¡Hola ${user.username}!</p>
         <button type="button" class="btn btn-danger btn-sm" onclick="destroySession()">LogOut</button>
         </div>`
     }
@@ -254,7 +310,7 @@ const printUser = () => {
 
 const destroySession = () => {
     fetch(baseUrl + '/api/logout', { method: "DELETE" }).then(res => {
-        user = [];
-        getProducts();
+        user = {};
+        location.href = "../public/index.html"
     })
 }

@@ -63,7 +63,6 @@ cartsInMongo.put("/cart-products/:_id", async (req, res) => {
     const productToFind = await cartsMongoDAO.findById(req.params);
     let { amount } = productToFind;
     const { query } = req.query;
-    console.log("productToFind", productToFind);
     if (!productToFind) {
         return res.status(400).send("Producto no encontrado");
     }
@@ -91,7 +90,6 @@ cartsInMongo.put("/cart-products/:_id", async (req, res) => {
 cartsInMongo.delete("/cart-products/:_id", async (req, res) => {
     try {
         const productInCart = await cartsMongoDAO.findById(req.params)
-
         if (!productInCart) {
             return res.status(400).send("Producto no encontrado");
         }
