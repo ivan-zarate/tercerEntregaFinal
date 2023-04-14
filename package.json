@@ -5,8 +5,7 @@
   "main": "server.js",  
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js",
-    "start-cluster": "nodemon server.js -m CLUSTER",
+    
     "start-forever-fork": "forever start server.js -p 8080",
     "start-forever-cluster": "forever start server.js -m CLUSTER -p 8081"
   },
