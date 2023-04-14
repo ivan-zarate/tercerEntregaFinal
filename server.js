@@ -104,7 +104,8 @@ else {
   srv.on('error', error => logger.warn(`Error en el servidor ${error}`))
 
   app.get("*", async (req, res) => {
+    const link= "../src/public/index.html"
     logger.warn("No existe la pagina solicitada")
-    return res.status(400).send({error: `An error occurred `});
+    return res.status(400).send({error: `No existe la pagina solicitada, sera redirigido a la pagina principal `, link});
   });
 } 
