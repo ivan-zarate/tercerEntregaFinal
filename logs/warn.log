@@ -91,3 +91,4 @@
 {"level":"warn","message":"No existe la pagina solicitada"}
 {"level":"warn","message":"No existe la pagina solicitada"}
 {"level":"warn","message":"No existe la pagina solicitada"}
+{"level":"warn","message":"Error en el servidor Error: listen EADDRINUSE: address already in use :::8080"}
