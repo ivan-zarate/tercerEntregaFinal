@@ -106,6 +106,6 @@ else {
   app.get("*", async (req, res) => {
     const link= 'http://127.0.0.1:5500/server-backend/src/public/index.html'
     logger.warn("No existe la pagina solicitada")
-    return res.status(400).redirect("/products");
+    return res.status(400).redirect("/api/products");
   });
 } 
